@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>记忆翻牌 · 大脑训练营</title>
+<link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <h1 class="logo">🧠 记忆翻牌 <span>大脑训练营</span></h1>
+    <button id="muteBtn" class="icon-btn" title="静音/开启音效">🔊</button>
+  </header>
+
+  <section class="controls" id="controls">
+    <div class="control-group">
+      <label>难度</label>
+      <div class="chip-row" id="difficultyRow"></div>
+    </div>
+
+    <div class="control-group" id="customGroup" hidden>
+      <label>自定义对数 <span id="customPairsValue">8</span> 对</label>
+      <input type="range" id="customPairs" min="4" max="18" value="8">
+    </div>
+
+    <div class="control-group">
+      <label>卡片主题</label>
+      <div class="chip-row" id="themeRow"></div>
+    </div>
+
+    <div class="control-group toggle-group">
+      <label class="switch-label">
+        <input type="checkbox" id="previewToggle" checked>
+        <span>开局记忆预览</span>
+      </label>
+      <label class="switch-label">
+        <input type="checkbox" id="soundToggle" checked>
+        <span>音效</span>
+      </label>
+    </div>
+
+    <button id="startBtn" class="primary-btn">开始游戏 ▶</button>
+  </section>
+
+  <section class="hud" id="hud" hidden>
+    <div class="stat">
+      <span class="stat-label">⏱ 时间</span>
+      <span class="stat-value" id="timeValue">00:00</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">🔁 步数</span>
+      <span class="stat-value" id="movesValue">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">🔥 连击</span>
+      <span class="stat-value" id="streakValue">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">⭐ 得分</span>
+      <span class="stat-value" id="scoreValue">0</span>
+    </div>
+    <div class="stat best">
+      <span class="stat-label">🏆 本局最佳</span>
+      <span class="stat-value" id="bestValue">--</span>
+    </div>
+    <div class="hud-actions">
+      <button id="pauseBtn" class="icon-btn" title="暂停">⏸</button>
+      <button id="restartBtn" class="icon-btn" title="重新开始">🔄</button>
+      <button id="quitBtn" class="icon-btn" title="返回设置">⚙</button>
+    </div>
+  </section>
+
+  <main class="board-wrap">
+    <div id="board" class="board" hidden></div>
+  </main>
+
+</div>
+
+<div id="previewOverlay" class="overlay" hidden>
+  <div class="preview-box">
+    <div class="preview-title">记住卡片位置！</div>
+    <div class="preview-count" id="previewCount">3</div>
+  </div>
+</div>
+
+<div id="pauseOverlay" class="overlay" hidden>
+  <div class="preview-box">
+    <div class="preview-title">已暂停</div>
+    <button id="resumeBtn" class="primary-btn">继续 ▶</button>
+  </div>
+</div>
+
+<div id="winOverlay" class="overlay" hidden>
+  <div class="win-box">
+    <h2>🎉 完成挑战！</h2>
+    <div class="win-stars" id="winStars">⭐⭐⭐</div>
+    <div class="win-stats">
+      <div><span>用时</span><b id="winTime">00:00</b></div>
+      <div><span>步数</span><b id="winMoves">0</b></div>
+      <div><span>最高连击</span><b id="winStreak">0</b></div>
+      <div><span>得分</span><b id="winScore">0</b></div>
+    </div>
+    <div class="win-record" id="winRecord"></div>
+    <div class="win-actions">
+      <button id="playAgainBtn" class="primary-btn">再来一局 ▶</button>
+      <button id="changeSettingsBtn" class="secondary-btn">更换设置 ⚙</button>
+    </div>
+  </div>
+</div>
+
+<canvas id="confettiCanvas"></canvas>
+
+<script src="script.js"></script>
+</body>
+</html>
