@@ -2,117 +2,138 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>记忆翻牌 · 大脑训练营</title>
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
-<div class="app">
+<div class="app" id="app">
 
   <header class="topbar">
-    <h1 class="logo">🧠 记忆翻牌 <span>大脑训练营</span></h1>
-    <button id="muteBtn" class="icon-btn" title="静音/开启音效">🔊</button>
+    <div class="brand">
+      <div class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2" opacity=".45"/><rect x="3" y="13" width="8" height="8" rx="2" opacity=".45"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>
+      </div>
+      <div class="brand-text">
+        <b>记忆翻牌</b>
+        <span>大脑训练营</span>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button id="soundBtn" class="round-btn" title="音效" aria-label="音效开关"></button>
+      <button id="themeBtn" class="round-btn" title="深色 / 浅色" aria-label="切换深色模式"></button>
+    </div>
   </header>
 
-  <section class="controls" id="controls">
-    <div class="control-group">
-      <label>难度</label>
-      <div class="chip-row" id="difficultyRow"></div>
+  <!-- 首页：选择模式与设置 -->
+  <section id="home" class="home">
+    <div class="hero">
+      <h1>练一练你的<em>记忆</em>力</h1>
+      <p>先看清卡片的位置，再把相同的卡片翻出来。五种玩法，八套卡面，难度随你调。</p>
     </div>
 
-    <div class="control-group" id="customGroup" hidden>
-      <label>自定义对数 <span id="customPairsValue">8</span> 对</label>
-      <input type="range" id="customPairs" min="4" max="18" value="8">
+    <div class="panel">
+      <div class="section-label">玩法</div>
+      <div class="mode-grid" id="modeGrid"></div>
     </div>
 
-    <div class="control-group">
-      <label>卡片主题</label>
-      <div class="chip-row" id="themeRow"></div>
-    </div>
+    <div class="panel settings">
+      <div class="setting-row" id="difficultyRowWrap">
+        <div class="setting-name">难度</div>
+        <div class="seg" id="difficultySeg"></div>
+      </div>
+      <div class="setting-row" id="levelRowWrap" hidden>
+        <div class="setting-name">关卡</div>
+        <div class="level-picker">
+          <button class="round-btn sm" id="levelPrev" aria-label="上一关"></button>
+          <span class="level-value tabular" id="levelValue">第 1 关</span>
+          <button class="round-btn sm" id="levelNext" aria-label="下一关"></button>
+          <span class="muted level-hint" id="levelHint"></span>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-name">卡面</div>
+        <div class="chip-row" id="themeRow"></div>
+      </div>
+      <div class="setting-row" id="previewRowWrap">
+        <div class="setting-name">开局预览</div>
+        <div class="seg" id="previewSeg"></div>
+      </div>
 
-    <div class="control-group toggle-group">
-      <label class="switch-label">
-        <input type="checkbox" id="previewToggle" checked>
-        <span>开局记忆预览</span>
-      </label>
-      <label class="switch-label">
-        <input type="checkbox" id="soundToggle" checked>
-        <span>音效</span>
-      </label>
-    </div>
-
-    <button id="startBtn" class="primary-btn">开始游戏 ▶</button>
-  </section>
-
-  <section class="hud" id="hud" hidden>
-    <div class="stat">
-      <span class="stat-label">⏱ 时间</span>
-      <span class="stat-value" id="timeValue">00:00</span>
-    </div>
-    <div class="stat">
-      <span class="stat-label">🔁 步数</span>
-      <span class="stat-value" id="movesValue">0</span>
-    </div>
-    <div class="stat">
-      <span class="stat-label">🔥 连击</span>
-      <span class="stat-value" id="streakValue">0</span>
-    </div>
-    <div class="stat">
-      <span class="stat-label">⭐ 得分</span>
-      <span class="stat-value" id="scoreValue">0</span>
-    </div>
-    <div class="stat best">
-      <span class="stat-label">🏆 本局最佳</span>
-      <span class="stat-value" id="bestValue">--</span>
-    </div>
-    <div class="hud-actions">
-      <button id="pauseBtn" class="icon-btn" title="暂停">⏸</button>
-      <button id="restartBtn" class="icon-btn" title="重新开始">🔄</button>
-      <button id="quitBtn" class="icon-btn" title="返回设置">⚙</button>
+      <div class="start-row">
+        <div class="best-line muted" id="bestLine"></div>
+        <button id="startBtn" class="btn btn-primary btn-lg">开始游戏</button>
+      </div>
     </div>
   </section>
 
-  <main class="board-wrap">
-    <div id="board" class="board" hidden></div>
-  </main>
-
-</div>
-
-<div id="previewOverlay" class="overlay" hidden>
-  <div class="preview-box">
-    <div class="preview-title">记住卡片位置！</div>
-    <div class="preview-count" id="previewCount">3</div>
-  </div>
-</div>
-
-<div id="pauseOverlay" class="overlay" hidden>
-  <div class="preview-box">
-    <div class="preview-title">已暂停</div>
-    <button id="resumeBtn" class="primary-btn">继续 ▶</button>
-  </div>
-</div>
-
-<div id="winOverlay" class="overlay" hidden>
-  <div class="win-box">
-    <h2>🎉 完成挑战！</h2>
-    <div class="win-stars" id="winStars">⭐⭐⭐</div>
-    <div class="win-stats">
-      <div><span>用时</span><b id="winTime">00:00</b></div>
-      <div><span>步数</span><b id="winMoves">0</b></div>
-      <div><span>最高连击</span><b id="winStreak">0</b></div>
-      <div><span>得分</span><b id="winScore">0</b></div>
+  <!-- 游戏界面 -->
+  <section id="game" class="game" hidden>
+    <div class="hud panel">
+      <div class="hud-title">
+        <span class="hud-mode" id="hudMode">经典</span>
+        <span class="hud-sub muted" id="hudSub">中等</span>
+      </div>
+      <div class="hud-stats" id="hudStats"></div>
+      <div class="hud-tools">
+        <button class="tool-btn" id="hintBtn" title="提示：短暂亮出一组卡片（H）"><span class="ico-slot" data-ico="bulb"></span><span class="badge" id="hintCount">2</span></button>
+        <button class="tool-btn" id="peekBtn" title="透视：短暂亮出全部卡片（V）"><span class="ico-slot" data-ico="eye"></span><span class="badge" id="peekCount">1</span></button>
+        <span class="tool-sep"></span>
+        <button class="round-btn" id="pauseBtn" title="暂停（P）" aria-label="暂停"></button>
+        <button class="round-btn" id="restartBtn" title="重新开始" aria-label="重新开始"></button>
+        <button class="round-btn" id="homeBtn" title="返回首页" aria-label="返回首页"></button>
+      </div>
     </div>
-    <div class="win-record" id="winRecord"></div>
-    <div class="win-actions">
-      <button id="playAgainBtn" class="primary-btn">再来一局 ▶</button>
-      <button id="changeSettingsBtn" class="secondary-btn">更换设置 ⚙</button>
+
+    <div class="status-bar" id="statusBar">
+      <div class="status-text" id="statusText">记住卡片位置</div>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <button class="btn btn-sm btn-primary" id="readyBtn">我记住了</button>
+    </div>
+
+    <div class="board-wrap" id="boardWrap">
+      <div id="board" class="board"></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- 暂停 -->
+<div id="pauseModal" class="modal-overlay" hidden>
+  <div class="modal small">
+    <div class="modal-icon"><span class="ico-slot" data-ico="pause"></span></div>
+    <div class="modal-title">已暂停</div>
+    <p class="modal-msg">卡片已隐藏，计时已停止。</p>
+    <div class="modal-actions">
+      <button class="btn" id="pauseHomeBtn">返回首页</button>
+      <button class="btn btn-primary" id="resumeBtn">继续</button>
     </div>
   </div>
 </div>
 
+<!-- 结算 -->
+<div id="resultModal" class="modal-overlay" hidden>
+  <div class="modal">
+    <div class="result-eyebrow" id="resultEyebrow">挑战完成</div>
+    <div class="modal-title big" id="resultTitle">太棒了</div>
+    <div class="stars" id="resultStars"></div>
+    <div class="result-score">
+      <span class="tabular" id="resultScore">0</span>
+      <small>分</small>
+    </div>
+    <div class="result-record" id="resultRecord"></div>
+    <div class="result-grid" id="resultGrid"></div>
+    <div class="modal-actions">
+      <button class="btn" id="resultHomeBtn">返回首页</button>
+      <button class="btn btn-primary" id="resultPrimaryBtn">再来一局</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-host" id="toastHost"></div>
 <canvas id="confettiCanvas"></canvas>
 
-<script src="script.js"></script>
+<script src="script.js?v=3"></script>
 </body>
 </html>
